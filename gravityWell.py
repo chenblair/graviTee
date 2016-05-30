@@ -19,28 +19,33 @@ from cocos import actions, layer, sprite, scene
 from cocos.director import director
 
 # Player class
+global prevVelocity_y,prevVelocity_x;
 
 class Me(actions.Move):
+    
   
   # step() is called every frame.
   # dt is the number of seconds elapsed since the last call.
-  def step(self, dt):
+    def step(self, dt):
     
-    super(Me, self).step(dt) # Run step function on the parent class.
-    myX = me.position[0]
-    myY = me.position[1]
-    aX = anchor.position[0] 
-    aY = anchor.position[1]
+        super(Me, self).step(dt) # Run step function on the parent class.
+        myX = me.position[0]
+        myY = me.position[1]
+        aX = anchor.position[0] 
+        aY = anchor.position[1]
     
-    graviX = 10000/((-myX+aX)*abs(myX-aX))
-    graviY = 10000/((-myY+aY)*abs(myY-aY))
+        graviX = 10000/((-myX+aX)*abs(myX-aX))
+        graviY = 10000/((-myY+aY)*abs(myY-aY))
     
-    # Determine velocity based on keyboard inputs.
-    velocity_x = 200+graviX
-    velocity_y = 500 * (keyboard[key.UP] - keyboard[key.DOWN])+graviY
+        # Determine velocity based on keyboard inputs.
+        velocity_x = prevVelocity_x+graviX
+        velocity_y = prevVelocity_y+500 * (keyboard[key.UP] - keyboard[key.DOWN])+graviY
     
-    # Set the object's velocity.
-    self.target.velocity = (velocity_x, velocity_y)
+        prevVelocity_x = velocity_x
+        prevVelocity_y = velocity_y
+    
+        # Set the object's velocity.
+        self.target.velocity = (velocity_x, velocity_y)
     
 # Main class
 
@@ -49,6 +54,9 @@ def main():
   
   # Initialize the window.
   director.init(width=500, height=300, do_not_scale=True, resizable=True)
+  
+  prevVelocity_x = 200
+  prevVelocity_y = 0
   
   # Create a layer and add a sprite to it.
   player_layer = layer.Layer()
