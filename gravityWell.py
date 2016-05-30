@@ -22,7 +22,8 @@ from cocos.director import director
 global prevVelocity_y,prevVelocity_x;
 
 class Me(actions.Move):
-    
+    prevVelocity_x = 0
+    prevVelocity_y = 0
   
   # step() is called every frame.
   # dt is the number of seconds elapsed since the last call.
@@ -38,11 +39,11 @@ class Me(actions.Move):
         graviY = 10000/((-myY+aY)*abs(myY-aY))
     
         # Determine velocity based on keyboard inputs.
-        velocity_x = prevVelocity_x+graviX
-        velocity_y = prevVelocity_y+500 * (keyboard[key.UP] - keyboard[key.DOWN])+graviY
+        velocity_x = self.prevVelocity_x+graviX
+        velocity_y = self.prevVelocity_y+500 * (keyboard[key.UP] - keyboard[key.DOWN])+graviY
     
-        prevVelocity_x = velocity_x
-        prevVelocity_y = velocity_y
+        self.prevVelocity_x = velocity_x
+        self.prevVelocity_y = velocity_y
     
         # Set the object's velocity.
         self.target.velocity = (velocity_x, velocity_y)
