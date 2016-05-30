@@ -17,12 +17,13 @@ from pyglet.window import key
 import cocos
 from cocos import actions, layer, sprite, scene
 from cocos.director import director
+from math import sqrt
 
 # Player class
 global prevVelocity_y,prevVelocity_x;
 
 class Me(actions.Move):
-    prevVelocity_x = 0
+    prevVelocity_x = -100
     prevVelocity_y = 0
   
   # step() is called every frame.
@@ -34,9 +35,10 @@ class Me(actions.Move):
         myY = me.position[1]
         aX = anchor.position[0] 
         aY = anchor.position[1]
-    
-        graviX = 10000/((-myX+aX)*abs(myX-aX))
-        graviY = 10000/((-myY+aY)*abs(myY-aY))
+        dist=sqrt((myX-aX)**2+(myY-aY)**2)
+        G=100.0
+        graviX = G*-(myX-aX)/(dist**2)
+        graviY = G*-(myY-aY)/(dist**2)
     
         # Determine velocity based on keyboard inputs.
         velocity_x = self.prevVelocity_x+graviX
@@ -47,6 +49,7 @@ class Me(actions.Move):
     
         # Set the object's velocity.
         self.target.velocity = (velocity_x, velocity_y)
+        print(velocity_x,velocity_y)
     
 # Main class
 
@@ -68,10 +71,10 @@ def main():
   player_layer.add(anchor)
   
   # Set initial position and velocity.
-  me.position = (0, randint(0,200))
+  me.position = (200, 300)
   me.velocity = (0, 0)
   
-  anchor.position = (100,100)
+  anchor.position = (200,200)
   
   # Set the sprite's movement class.
   me.do(Me())
