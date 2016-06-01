@@ -22,11 +22,9 @@ from math import sqrt
 # Player class
 global prevVelocity_y,prevVelocity_x;
 
-class Me(actions.Move,cocos.layer.Layer):
+class Me(actions.Move):
     prevVelocity_x = 10
     prevVelocity_y = 0
-    
-    is_event_handler = True     #: enable director.window events
     
     def __init__(self):
         super( Me, self ).__init__()
@@ -41,9 +39,9 @@ class Me(actions.Move,cocos.layer.Layer):
         myY = me.position[1]
         velocity_x = self.prevVelocity_x
         velocity_y = self.prevVelocity_y+500 * (keyboard[key.UP] - keyboard[key.DOWN])
-        for i in range(numAnchors) :
-            aX = anchors[i].position[0] 
-            aY = anchors[i].position[1]
+        for anchor in anchors :
+            aX = anchor.position[0] 
+            aY = anchor.position[1]
             dist=sqrt((myX-aX)**2+(myY-aY)**2)
             graviX = G*-(myX-aX)/(dist**2)
             graviY = G*-(myY-aY)/(dist**2)
@@ -58,17 +56,6 @@ class Me(actions.Move,cocos.layer.Layer):
         # Set the object's velocity.
         self.target.velocity = (velocity_x, velocity_y)
         print(velocity_x,velocity_y)
-    def on_mouse_press (self, x, y, buttons, modifiers):
-        """This function is called when any mouse button is pressed
-        (x, y) are the physical coordinates of the mouse
-        'buttons' is a bitwise or of pyglet.window.mouse constants LEFT, MIDDLE, RIGHT
-        'modifiers' is a bitwise or of pyglet.window.key modifier constants
-        (values like 'SHIFT', 'OPTION', 'ALT')
-        """
-        anchors.append(sprite.Sprite('ball.jpg'))
-        player_layer.add(anchors[i])
-        anchors[i].position = (x,y)
-        numAnchors += 1
     
 class Mouse(cocos.layer.Layer):
 
@@ -97,10 +84,13 @@ class Mouse(cocos.layer.Layer):
         """
         self.posx, self.posy = director.get_virtual_coordinates (x, y)
         self.update_text (x,y)
+        anchors.append(sprite.Sprite('ball.jpg'))
+        player_layer.add(anchors[-1])
+        anchors[-1].position = (x,y)
 # Main class
 
 def main():
-  global keyboard,myX,myY,aX,aY,me,anchors,numAnchors # Declare this as global so it can be accessed within class methods.
+  global keyboard,myX,myY,aX,aY,me,anchors,numAnchors,player_layer # Declare this as global so it can be accessed within class methods.
   
   # Initialize the window.
   director.init(width=500, height=300, do_not_scale=True, resizable=True)
