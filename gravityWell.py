@@ -98,7 +98,7 @@ def main():
   prevVelocity_x = 200
   prevVelocity_y = 0
   
-  numAnchors=10
+  numAnchors=0
   # Create a layer and add a sprite to it.
   player_layer = layer.Layer()
   me = sprite.Sprite('ball.jpg')

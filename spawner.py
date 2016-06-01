@@ -21,28 +21,37 @@ from cocos.director import director
 
 # Player class
 
-class Me(actions.Move):
+class Spawner(actions.Move):
   
   # step() is called every frame.
   # dt is the number of seconds elapsed since the last call.
-  totaltime=0.0
   def step(self, dt):
     
-    super(Me, self).step(dt) # Run step function on the parent class.
-    
-    you = sprite.Sprite('ball.jpg')
-    player_layer.add(you)
+    super(Spawner, self).step(dt) # Run step function on the parent class.
+    global reloadTime
+    reloadTime+=dt
+    print(reloadTime)
+    global spawnRate
+    if len(projectiles)<=spawnMax and reloadTime>=spawnRate:
+    #if len(yous)<=10:
+        
+        projectile = sprite.Sprite('ball.jpg')
+        player_layer.add(projectile)
   
-    # Set initial position and velocity.
-    you.position = (0, randint(0,600))
-    you.velocity = (randint(500,2000), randint(-300,300))
-    you.do(You())
+        # Set initial position and velocity.
+        projectile.position = (0, randint(0,600))
+        projectile.velocity = (randint(500,2000), randint(-300,300))
+        projectile.do(Projectile())
+        projectiles.append(projectile)
+        reloadTime-=spawnRate
+        #print(len(yous));
+        
     
 # Main class
-class You(actions.Move):
+class Projectile(actions.Move):
     def step(self, dt):
     
-        super(You, self).step(dt) # Run step function on the parent class.
+        super(Projectile, self).step(dt) # Run step function on the parent class.
     
     # Determine velocity based on keyboard inputs.
         #velocity_x = randint(0,1000)
@@ -52,22 +61,26 @@ class You(actions.Move):
         #self.target.velocity = (velocity_x, velocity_y)
     
 def main():
-  global keyboard # Declare this as global so it can be accessed within class methods.
+  global keyboard,projectiles,spawnMax,reloadTime,spawnRate # Declare this as global so it can be accessed within class methods.
   # Initialize the window.
+  projectiles=[]
+  spawnMax=10
+  reloadTime=0.0
+  spawnRate=1.0
   director.init(width=1000, height=600, do_not_scale=True, resizable=True)
   
   # Create a layer and add a sprite to it.
   global player_layer
   player_layer = layer.Layer()
-  me = sprite.Sprite('ball.jpg')
-  player_layer.add(me)
+  spawner = sprite.Sprite('ball.jpg')
+  player_layer.add(spawner)
   
   # Set initial position and velocity.
-  me.position = (0, randint(0,600))
-  me.velocity = (0, 0)
-  me.visible=False
+  spawner.position = (0, randint(0,600))
+  spawner.velocity = (0, 0)
+  spawner.visible=False
   # Set the sprite's movement class.
-  me.do(Me())
+  spawner.do(Spawner())
 
   # Create a scene and set its initial layer.
   main_scene = scene.Scene(player_layer)
