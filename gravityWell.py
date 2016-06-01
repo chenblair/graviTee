@@ -128,12 +128,12 @@ def main():
   me.do(Me())
 
   # Create a scene and set its initial layer.
-  main_scene = scene.Scene(player_layer)
+  main_scene = scene.Scene(player_layer,Mouse())
 
   # Attach a KeyStateHandler to the keyboard object.
   keyboard = key.KeyStateHandler()
   director.window.push_handlers(keyboard)
-  director.run( cocos.scene.Scene( Mouse() ) )
+  #director.run( cocos.scene.Scene( Mouse() ) )
   # Play the scene in the window.
   director.run(main_scene)
 
