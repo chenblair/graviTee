@@ -64,16 +64,6 @@ class Mouse(cocos.layer.Layer):
     def __init__(self):
         super( Mouse, self ).__init__()
 
-        self.posx = 100
-        self.posy = 240
-        self.text = cocos.text.Label('No mouse events yet', font_size=18, x=self.posx, y=self.posy )
-        self.add( self.text )
-
-    def update_text (self, x, y):
-        text = 'Mouse @ %d,%d' % (x, y)
-        self.text.element.text = text
-        self.text.element.x = self.posx
-        self.text.element.y = self.posy
     def on_mouse_press (self, x, y, buttons, modifiers):
         """This function is called when any mouse button is pressed
 
@@ -82,8 +72,6 @@ class Mouse(cocos.layer.Layer):
         'modifiers' is a bitwise or of pyglet.window.key modifier constants
         (values like 'SHIFT', 'OPTION', 'ALT')
         """
-        self.posx, self.posy = director.get_virtual_coordinates (x, y)
-        self.update_text (x,y)
         anchors.append(sprite.Sprite('ball.jpg'))
         player_layer.add(anchors[-1])
         anchors[-1].position = (x,y)
