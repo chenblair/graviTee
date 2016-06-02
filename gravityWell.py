@@ -43,8 +43,11 @@ class Me(actions.Move):
             aX = anchor.position[0] 
             aY = anchor.position[1]
             dist=sqrt((myX-aX)**2+(myY-aY)**2)
-            graviX = G*-(myX-aX)/(dist**2)
-            graviY = G*-(myY-aY)/(dist**2)
+            graviX=0
+            graviY=0
+            if dist<200 :
+                graviX = G*-(myX-aX)/(dist**2)
+                graviY = G*-(myY-aY)/(dist**2)
     
             # Determine velocity based on keyboard inputs.
             velocity_x += graviX
