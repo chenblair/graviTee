@@ -60,7 +60,7 @@ class Mouse(cocos.layer.Layer):
         'modifiers' is a bitwise or of pyglet.window.key modifier constants
         (values like 'SHIFT', 'OPTION', 'ALT')
         """
-        anchors.append(sprite.Sprite('ball.jpg'))
+        anchors.append(sprite.Sprite('Sun_Glasses.png'))
         player_layer.add(anchors[-1])
         anchors[-1].position = (x,y)
 # Main class
@@ -77,7 +77,7 @@ class Spawner(actions.Move):
     global spawnRate
     if len(projectiles)<=spawnMax and reloadTime>=spawnRate:
         
-        projectile = sprite.Sprite('ball.jpg')
+        projectile = sprite.Sprite('earth-small.png')
         player_layer.add(projectile)
   
         # Set initial position and velocity.
@@ -142,7 +142,7 @@ def main():
   #player_layer.add(me)
   anchors = []
   for i in range(len(anchors)) :
-      anchors.append(sprite.Sprite('ball.jpg'))
+      anchors.append(sprite.Sprite('Sun_Glasses.png'))
       player_layer.add(anchors[i])
       anchors[i].position = (randint(0,600),randint(0,600))
   
@@ -154,7 +154,7 @@ def main():
   # Set the sprite's movement class.
   #me.do(Me())
   
-  spawner = sprite.Sprite('ball.jpg')
+  spawner = sprite.Sprite('earth-small.png')
   player_layer.add(spawner)
   
   # Set initial position and velocity.
