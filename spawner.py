@@ -65,7 +65,7 @@ def main():
   # Initialize the window.
   projectiles=[]
   spawnMax=10
-  reloadTime=0.0
+  reloadTime=1.0
   spawnRate=1.0
   director.init(width=1000, height=600, do_not_scale=True, resizable=True)
   
