@@ -19,7 +19,6 @@ from cocos.director import director
 
 from math import sqrt
 
-keys = KeyStateHandler()
 # Player class
 
 class Player1(actions.Move):
@@ -52,6 +51,7 @@ class Player2(actions.Move):
     # Set the object's velocity.
     self.target.velocity = (velocity_x, velocity_y)
 class Ball(actions.Move):
+    G2 = 0
     prevVelocity_x = 0
     prevVelocity_y = 0
     
@@ -69,6 +69,9 @@ class Ball(actions.Move):
     
         super(Ball, self).step(dt) # Run step function on the parent class.
         G=100.0
+        G2 = self.G2
+        G2 += 5*dt
+        self.G2 = G2
         myX = ball.position[0]
         myY = ball.position[1]
         velocity_x = self.prevVelocity_x
@@ -79,10 +82,10 @@ class Ball(actions.Move):
             velocity_x += result['graviX']
             velocity_y += result['graviY']
         
-        result = self.gravity(myX,myY,player1.position[0],player1.position[1],G)
+        result = self.gravity(myX,myY,player1.position[0],player1.position[1],G2)
         velocity_x += result['graviX']
         velocity_y += result['graviY']
-        result = self.gravity(myX,myY,player2.position[0],player2.position[1],G)
+        result = self.gravity(myX,myY,player2.position[0],player2.position[1],G2)
         velocity_x += result['graviX']
         velocity_y += result['graviY']
         self.prevVelocity_x = velocity_x
