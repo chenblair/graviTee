@@ -64,7 +64,7 @@ class Ball(actions.Move):
         dist=sqrt((myX-aX)**2+(myY-aY)**2)
         graviX = G*-(myX-aX)/(dist**2)
         graviY = G*-(myY-aY)/(dist**2)
-        return {'graviX':graviX, 'graviY':graviY }
+        return {'dist':dist, 'graviX':graviX, 'graviY':graviY }
     def step(self, dt):
     
         super(Ball, self).step(dt) # Run step function on the parent class.
@@ -83,9 +83,13 @@ class Ball(actions.Move):
             velocity_y += result['graviY']
         
         result = self.gravity(myX,myY,player1.position[0],player1.position[1],G2)
+        if result['dist']<(player1.width+ball.width)/2:
+            player1.stop()
         velocity_x += result['graviX']
         velocity_y += result['graviY']
         result = self.gravity(myX,myY,player2.position[0],player2.position[1],G2)
+        if result['dist']<(player2.width+ball.width)/2:
+            player2.stop()
         velocity_x += result['graviX']
         velocity_y += result['graviY']
         self.prevVelocity_x = velocity_x
