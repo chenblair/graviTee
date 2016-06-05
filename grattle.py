@@ -19,6 +19,8 @@ from cocos.director import director
 
 from math import sqrt
 
+import logging
+
 # Player class
 
 class Player1(actions.Move):
@@ -97,7 +99,7 @@ class Ball(actions.Move):
     
         # Set the object's velocity.
         self.target.velocity = (velocity_x, velocity_y)
-        # print(velocity_x,velocity_y)
+        logging.info((velocity_x,velocity_y))
         
 class AnchorDrop(cocos.layer.Layer):
 
