@@ -24,7 +24,8 @@ import logging
 # Player class
 
 class Player1(actions.Move):
-  
+  global timer1
+  timer1=1.0
   # step() is called every frame.
   # dt is the number of seconds elapsed since the last call.
   def step(self, dt):
@@ -38,13 +39,18 @@ class Player1(actions.Move):
     # Set the object's velocity.
     self.target.velocity = (velocity_x, velocity_y)
     
-    if keyboard[key.SPACE]:
+    global timer1
+    timer1+=dt
+    print(timer1)
+    if keyboard[key.SPACE] and timer1>=1:
         anchors.append(sprite.Sprite('ball.jpg'))
         player_layer.add(anchors[-1])
         anchors[-1].position = (player1.position[0],player1.position[1])
+        timer1=0
     
 class Player2(actions.Move):
-  
+  global timer2
+  timer2=1.0
   # step() is called every frame.
   # dt is the number of seconds elapsed since the last call.
   def step(self, dt):
@@ -58,10 +64,13 @@ class Player2(actions.Move):
     # Set the object's velocity.
     self.target.velocity = (velocity_x, velocity_y)
     
-    if keyboard[key.Z]:
+    global timer2
+    timer2+=dt
+    if keyboard[key.Z] and timer2>=1:
         anchors.append(sprite.Sprite('ball.jpg'))
         player_layer.add(anchors[-1])
         anchors[-1].position = (player2.position[0],player2.position[1])
+        timer2=0
     
     
             
