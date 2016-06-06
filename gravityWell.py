@@ -38,16 +38,16 @@ class Me(actions.Move):
         myX = me.position[0]
         myY = me.position[1]
         velocity_x = self.prevVelocity_x
-        velocity_y = self.prevVelocity_y+500 * (keyboard[key.UP] - keyboard[key.DOWN])
+        velocity_y = self.prevVelocity_y
         for anchor in anchors :
             aX = anchor.position[0] 
             aY = anchor.position[1]
             dist=sqrt((myX-aX)**2+(myY-aY)**2)
-            graviX=0
-            graviY=0
-            if dist<200 :
-                graviX = G*-(myX-aX)/(dist**2)
-                graviY = G*-(myY-aY)/(dist**2)
+            # graviX=0
+            # graviY=0
+            # if dist<200 :
+            graviX = G*-(myX-aX)/(dist**2)
+            graviY = G*-(myY-aY)/(dist**2)
     
             # Determine velocity based on keyboard inputs.
             velocity_x += graviX
