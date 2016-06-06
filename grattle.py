@@ -38,6 +38,11 @@ class Player1(actions.Move):
     # Set the object's velocity.
     self.target.velocity = (velocity_x, velocity_y)
     
+    if keyboard[key.SPACE]:
+        anchors.append(sprite.Sprite('ball.jpg'))
+        player_layer.add(anchors[-1])
+        anchors[-1].position = (player1.position[0],player1.position[1])
+    
 class Player2(actions.Move):
   
   # step() is called every frame.
@@ -52,6 +57,14 @@ class Player2(actions.Move):
     
     # Set the object's velocity.
     self.target.velocity = (velocity_x, velocity_y)
+    
+    if keyboard[key.Z]:
+        anchors.append(sprite.Sprite('ball.jpg'))
+        player_layer.add(anchors[-1])
+        anchors[-1].position = (player2.position[0],player2.position[1])
+    
+    
+            
 class Ball(actions.Move):
     G2 = 0
     prevVelocity_x = 0
@@ -102,7 +115,7 @@ class Ball(actions.Move):
         logging.info((velocity_x,velocity_y))
         
 class AnchorDrop(cocos.layer.Layer):
-
+    
     # If you want that your layer receives director.window events
     # you must set this variable to 'True'
     is_event_handler = True
@@ -110,7 +123,7 @@ class AnchorDrop(cocos.layer.Layer):
     def __init__(self):
 
         super( AnchorDrop, self ).__init__()
-    def on_key_press (self, pressed, modifiers):
+    """def on_key_press (self, pressed, modifiers):
         if keyboard[key.SPACE]:
             anchors.append(sprite.Sprite('ball.jpg'))
             player_layer.add(anchors[-1])
@@ -118,7 +131,7 @@ class AnchorDrop(cocos.layer.Layer):
         if keyboard[key.Z]:
             anchors.append(sprite.Sprite('ball.jpg'))
             player_layer.add(anchors[-1])
-            anchors[-1].position = (player2.position[0],player2.position[1])
+            anchors[-1].position = (player2.position[0],player2.position[1])"""
     
 # Main class
 
