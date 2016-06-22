@@ -107,13 +107,20 @@ class Ball(actions.Move):
             velocity_y += result['graviY']
         
         result = self.gravity(myX,myY,player1.position[0],player1.position[1],G2)
-        if result['dist']<(player1.width+ball.width)/2:
+        global player1_dead, player2_dead
+        if result['dist']<(player1.width+ball.width)/2 and player2_dead == False and player1_dead == False:
             player1.stop()
+            self.text = cocos.text.Label('Player 1 loses', font_size=18, x=player1.position[0], y=player1.position[1] )
+            player_layer.add( self.text )
+            player1_dead=True
         velocity_x += result['graviX']
         velocity_y += result['graviY']
         result = self.gravity(myX,myY,player2.position[0],player2.position[1],G2)
-        if result['dist']<(player2.width+ball.width)/2:
+        if result['dist']<(player2.width+ball.width)/2 and player1_dead == False and player2_dead == False:
             player2.stop()
+            self.text = cocos.text.Label('Player 2 loses', font_size=18, x=player2.position[0], y=player2.position[1] )
+            player_layer.add( self.text )
+            player2_dead=True
         velocity_x += result['graviX']
         velocity_y += result['graviY']
         self.prevVelocity_x = velocity_x
@@ -145,13 +152,14 @@ class AnchorDrop(cocos.layer.Layer):
 # Main class
 
 def main():
-  global keyboard,player1,player2,anchors,player_layer,ball # Declare this as global so it can be accessed within class methods.
+  global keyboard,player1,player2,anchors,player_layer,ball,player1_dead,player2_dead # Declare this as global so it can be accessed within class methods.
   
   # Initialize the window.
   director.init(width=500, height=300, do_not_scale=True, resizable=True)
   
   anchors = []
-  
+  player1_dead=False
+  player2_dead=False
   # Create a layer and add a sprite to it.
   player_layer = layer.Layer()
   player1 = sprite.Sprite('ball.jpg')
