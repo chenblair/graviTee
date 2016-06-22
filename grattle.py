@@ -32,9 +32,18 @@ class Player1(actions.Move):
     
     super(Player1, self).step(dt) # Run step function on the parent class.
     
-    # Determine velocity based on keyboard inputs.
     velocity_x = 100 * (keyboard[key.RIGHT] - keyboard[key.LEFT])
     velocity_y = 100 * (keyboard[key.UP] - keyboard[key.DOWN])
+    
+    # Determine velocity based on keyboard inputs.
+    if player1.position[0]<10:
+        velocity_x = 100 * (keyboard[key.RIGHT])
+    elif player1.position[0]>490:
+        velocity_x = 100 * (-keyboard[key.LEFT])
+    if player1.position[1]<10:
+        velocity_y = 100 * (keyboard[key.UP])
+    elif player1.position[1]>290:
+        velocity_y = 100 * (-keyboard[key.DOWN])
     
     # Set the object's velocity.
     self.target.velocity = (velocity_x, velocity_y)
@@ -60,6 +69,15 @@ class Player2(actions.Move):
     # Determine velocity based on keyboard inputs.
     velocity_x = 100 * (keyboard[key.D] - keyboard[key.A])
     velocity_y = 100 * (keyboard[key.W] - keyboard[key.S])
+    
+    if player2.position[0]<10:
+        velocity_x = 100 * (keyboard[key.D])
+    elif player2.position[0]>490:
+        velocity_x = 100 * (-keyboard[key.A])
+    if player2.position[1]<10:
+        velocity_y = 100 * (keyboard[key.W])
+    elif player2.position[1]>290:
+        velocity_y = 100 * (-keyboard[key.S])
     
     # Set the object's velocity.
     self.target.velocity = (velocity_x, velocity_y)
@@ -152,7 +170,7 @@ class AnchorDrop(cocos.layer.Layer):
 # Main class
 
 def main():
-  global keyboard,player1,player2,anchors,player_layer,ball,player1_dead,player2_dead # Declare this as global so it can be accessed within class methods.
+  global keyboard,player1,player2,anchors,player_layer,ball,player1_dead,player2_dead,director # Declare this as global so it can be accessed within class methods.
   
   # Initialize the window.
   director.init(width=500, height=300, do_not_scale=True, resizable=True)
