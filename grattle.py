@@ -31,31 +31,33 @@ class Player1(actions.Move):
   def step(self, dt):
     
     super(Player1, self).step(dt) # Run step function on the parent class.
-    
-    velocity_x = 100 * (keyboard[key.RIGHT] - keyboard[key.LEFT])
-    velocity_y = 100 * (keyboard[key.UP] - keyboard[key.DOWN])
-    
-    # Determine velocity based on keyboard inputs.
-    if player1.position[0]<10:
-        velocity_x = 100 * (keyboard[key.RIGHT])
-    elif player1.position[0]>490:
-        velocity_x = 100 * (-keyboard[key.LEFT])
-    if player1.position[1]<10:
-        velocity_y = 100 * (keyboard[key.UP])
-    elif player1.position[1]>290:
-        velocity_y = 100 * (-keyboard[key.DOWN])
-    
-    # Set the object's velocity.
-    self.target.velocity = (velocity_x, velocity_y)
+    velocity_x=0
+    velocity_y=0
     
     global timer1
     timer1+=dt
-    if keyboard[key.SPACE] and timer1>=1:
-        anchors.append(sprite.Sprite('ball.png'))
-        player_layer.add(anchors[-1])
-        anchors[-1].position = (player1.position[0],player1.position[1])
-        timer1=0
     
+    if not player1_dead:
+        velocity_x = 100 * (keyboard[key.RIGHT] - keyboard[key.LEFT])
+        velocity_y = 100 * (keyboard[key.UP] - keyboard[key.DOWN])
+    
+        # Determine velocity based on keyboard inputs.
+        if player1.position[0]<10:
+            velocity_x = 100 * (keyboard[key.RIGHT])
+        elif player1.position[0]>490:
+                velocity_x = 100 * (-keyboard[key.LEFT])
+        if player1.position[1]<10:
+            velocity_y = 100 * (keyboard[key.UP])
+        elif player1.position[1]>290:
+            velocity_y = 100 * (-keyboard[key.DOWN])
+    
+        if keyboard[key.SPACE] and timer1>=1:
+            anchors.append(sprite.Sprite('ball.png'))
+            player_layer.add(anchors[-1])
+            anchors[-1].position = (player1.position[0],player1.position[1])
+            timer1=0
+    
+    self.target.velocity = (velocity_x, velocity_y)
 class Player2(actions.Move):
   global timer2
   timer2=1.0
@@ -65,29 +67,31 @@ class Player2(actions.Move):
     
     super(Player2, self).step(dt) # Run step function on the parent class.
     
-    # Determine velocity based on keyboard inputs.
-    velocity_x = 100 * (keyboard[key.D] - keyboard[key.A])
-    velocity_y = 100 * (keyboard[key.W] - keyboard[key.S])
-    
-    if player2.position[0]<10:
-        velocity_x = 100 * (keyboard[key.D])
-    elif player2.position[0]>490:
-        velocity_x = 100 * (-keyboard[key.A])
-    if player2.position[1]<10:
-        velocity_y = 100 * (keyboard[key.W])
-    elif player2.position[1]>290:
-        velocity_y = 100 * (-keyboard[key.S])
-    
-    # Set the object's velocity.
-    self.target.velocity = (velocity_x, velocity_y)
-    
     global timer2
     timer2+=dt
-    if keyboard[key.Z] and timer2>=1:
-        anchors.append(sprite.Sprite('ball.png'))
-        player_layer.add(anchors[-1])
-        anchors[-1].position = (player2.position[0],player2.position[1])
-        timer2=0
+    
+    if not player2_dead:
+        # Determine velocity based on keyboard inputs.
+        velocity_x = 100 * (keyboard[key.D] - keyboard[key.A])
+        velocity_y = 100 * (keyboard[key.W] - keyboard[key.S])
+    
+        if player2.position[0]<10:
+            velocity_x = 100 * (keyboard[key.D])
+        elif player2.position[0]>490:
+            velocity_x = 100 * (-keyboard[key.A])
+        if player2.position[1]<10:
+            velocity_y = 100 * (keyboard[key.W])
+        elif player2.position[1]>290:
+            velocity_y = 100 * (-keyboard[key.S])
+    
+        # Set the object's velocity.
+        self.target.velocity = (velocity_x, velocity_y)
+
+        if keyboard[key.Z] and timer2>=1:
+            anchors.append(sprite.Sprite('ball.png'))
+            player_layer.add(anchors[-1])
+            anchors[-1].position = (player2.position[0],player2.position[1])
+            timer2=0
     
     
             
@@ -126,18 +130,18 @@ class Ball(actions.Move):
         result = self.gravity(myX,myY,player1.position[0],player1.position[1],G2)
         global player1_dead, player2_dead
         if result['dist']<(player1.width+ball.width)/2 and player2_dead == False and player1_dead == False:
-            player1.stop()
             self.text = cocos.text.Label('Player 1 loses', font_size=18, x=player1._x, y=player1.position[1] )
             player_layer.add( self.text )
-            player1_dead=True
+            # player1_dead=True
+            cleanSlate()
         velocity_x += result['graviX']
         velocity_y += result['graviY']
         result = self.gravity(myX,myY,player2.position[0],player2.position[1],G2)
         if result['dist']<(player2.width+ball.width)/2 and player1_dead == False and player2_dead == False:
-            player2.stop()
             self.text = cocos.text.Label('Player 2 loses', font_size=18, x=player2.position[0], y=player2.position[1] )
             player_layer.add( self.text )
-            player2_dead=True
+           #  player2_dead=True
+            cleanSlate()
         velocity_x += result['graviX']
         velocity_y += result['graviY']
         self.prevVelocity_x = velocity_x
@@ -196,17 +200,34 @@ class Cross(actions.Move):
         
             
        
+def cleanSlate():
+    player1_dead = False
+    player2_dead = False
+    ball.position = (250,150)
+    ball.velocity = (0,0)
+    
+    player1.position = (400, 150)
+    player1.velocity = (0, 0)
+    
+    player2.position = (100, 150)
+    player2.velocity = (0, 0)
+
+    for anchor in anchors :
+        player_layer.remove(anchor)
+    
+    anchors[:] = []
 # Main class
 
 def main():
   global keyboard,player1,player2,anchors,player_layer,ball,player1_dead,player2_dead,director,cross # Declare this as global so it can be accessed within class methods.
+  global ball
   
   # Initialize the window.
   director.init(width=500, height=300, do_not_scale=True, resizable=True)
   
   anchors = []
-  player1_dead=False
-  player2_dead=False
+  player1_dead = False
+  player2_dead = False
   # Create a layer and add a sprite to it.
   player_layer = layer.Layer()
   player1 = sprite.Sprite('ball.png')
