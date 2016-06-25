@@ -132,7 +132,9 @@ class Ball(actions.Move):
         if result['dist']<(player1.width+ball.width)/2 and player2_dead == False and player1_dead == False:
             self.text = cocos.text.Label('Player 1 loses', font_size=18, x=player1._x, y=player1.position[1] )
             player_layer.add( self.text )
-            # player1_dead=True
+            player1_dead=True
+            velocity_x=0
+            velocity_y=0
             cleanSlate()
         velocity_x += result['graviX']
         velocity_y += result['graviY']
@@ -140,7 +142,9 @@ class Ball(actions.Move):
         if result['dist']<(player2.width+ball.width)/2 and player1_dead == False and player2_dead == False:
             self.text = cocos.text.Label('Player 2 loses', font_size=18, x=player2.position[0], y=player2.position[1] )
             player_layer.add( self.text )
-           #  player2_dead=True
+            player2_dead=True
+            velocity_x=0
+            velocity_y=0
             cleanSlate()
         velocity_x += result['graviX']
         velocity_y += result['graviY']
