@@ -10,6 +10,7 @@
 # Imports
 
 import pyglet
+import time
 from pyglet.window import key
 from pyglet.window.key import KeyStateHandler
 
@@ -96,6 +97,7 @@ class Player2(actions.Move):
     
             
 class Ball(actions.Move):
+    clean = False
     G2 = 0
     prevVelocity_x = 0
     prevVelocity_y = 0
@@ -113,6 +115,10 @@ class Ball(actions.Move):
     def step(self, dt):
     
         super(Ball, self).step(dt) # Run step function on the parent class.
+        if self.clean:
+            cleanSlate(self.text)
+            self.clean = False
+            return
         G=100.0
         G2 = self.G2
         G2 += 5*dt
@@ -135,7 +141,7 @@ class Ball(actions.Move):
             # player1_dead=True
             velocity_x=0
             velocity_y=0
-            cleanSlate()
+            self.clean = True
         velocity_x += result['graviX']
         velocity_y += result['graviY']
         result = self.gravity(myX,myY,player2.position[0],player2.position[1],G2)
@@ -145,7 +151,7 @@ class Ball(actions.Move):
             # player2_dead=True
             velocity_x=0
             velocity_y=0
-            cleanSlate()
+            self.clean = True
         velocity_x += result['graviX']
         velocity_y += result['graviY']
         self.prevVelocity_x = velocity_x
@@ -204,18 +210,20 @@ class Cross(actions.Move):
         
             
        
-def cleanSlate():
+def cleanSlate(text):
+    time.sleep(1)
     player1_dead = False
     player2_dead = False
     ball.position = (250,150)
     ball.velocity = (0,0)
-    
+
     player1.position = (400, 150)
     player1.velocity = (0, 0)
     
     player2.position = (100, 150)
     player2.velocity = (0, 0)
 
+    player_layer.remove(text)
     for anchor in anchors :
         player_layer.remove(anchor)
     
